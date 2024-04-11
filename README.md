@@ -1,2 +1,5 @@
 # SimulacroPrimerParcial2024
-Simulacro Primer Parcial 2024
+
+Alumno: José Vicente Reyes Castelló
+
+Legajo FAI-3220
