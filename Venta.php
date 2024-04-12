@@ -87,43 +87,52 @@ class Venta
     {
 
         //inicialización variable
-        $motoPuedeVenderse = $objMoto->getStockMoto();
-        $motoVendida = null;
-
+        $motoPuedeVenderse = $objMoto->motoEnStock();
+        $actualizaPrecio = 0;
+        $clienteHabilitado = $this->objClienteVenta->estadoCliente();
+        $arrayColeccionMotos = $this->getObjColeccionMoto();
+        $retornoMotos = array($arrayColeccionMotos);
 
         //instrucciones
-        if ($motoPuedeVenderse == true) {
-            $this->setPrecioMoto($objMoto->darPrecioVenta());
-            $motoVendida = $this->setObjColeccionMoto($objMoto);
-        } else {
-            $this->setObjColeccionMoto($motoVendida);
+        if ($motoPuedeVenderse == true && $clienteHabilitado == true) {
+            $actualizaPrecio = $objMoto->darPrecioVenta();
+            $this->setPrecioMoto($actualizaPrecio);
+            array_push($retornoMotos, $objMoto);
+            $this->setObjColeccionMoto($retornoMotos);
         }
 
-        //retorno
-        return $motoVendida;
-    }
-    // VER SI EL INCORPORAR ES A EMPRESA->COLECCION O MODIFICA LA VENTA
 
+        //retorno
+        return $retornoMotos;
+    }
+
+    public function recorridoMotos(){
+        $arregloMotos = $this->getObjColeccionMoto();
+        $cantArregloMotos = count($arregloMotos);
+        $mensajeColeccionMoto = "";
+
+        for ($i=0; $i<$cantArregloMotos;$i++){
+            $mensajeColeccionMoto = "Codigo: " . $arregloMotos[$i]->getCodigoMoto() . "\n" .
+            "Costo: " . $arregloMotos[$i]->getCostoMoto() . "\n" .
+            "Año de fabricación: " . $arregloMotos[$i]->getAñoMoto() . "\n" .
+            "Descripción: " . $arregloMotos[$i]->getDescripcionMoto() . "\n" .
+            "Porcentaje de incremento anual: " . $arregloMotos[$i]->getPorcentajeIncrementoAnualMoto() . " %" . "\n" .
+            "Moto disponible: " . $arregloMotos[$i]->motoSiNo();
+        }
+
+        return $mensajeColeccionMoto;
+    }
     //Método __toString para retornar los atributos
     public function __toString()
     {
-        //inicialización variable
-        $mensajeMotoVendida = "";
-        $tipoCollecionMoto = gettype($this->getObjColeccionMoto());
 
-        //instrucciones
-        if ($this->getObjColeccionMoto() !== null && $tipoCollecionMoto !== "array") {
-            $mensajeMotoVendida =  "Moto vendida: \n" . $this->getObjColeccionMoto() . "\n";
-        } else {
-            $mensajeMotoVendida = "Moto vendida: Ninguna\n";
-        }
 
         //retorno usando variables de las instrucciones
         return
             "Número de Venta: " . $this->getNumeroVenta() . "\n" .
             "Fecha de venta: " . $this->getFechaVenta() . "\n" .
             "Cliente: \n" . $this->getObjClienteVenta() . "\n" .
-            $mensajeMotoVendida .
+            "Moto vendida: \n" . $this->recorridoMotos() . "\n" .
             "Precio de venta: " . $this->getPrecioMoto() . "\n";
     }
 }

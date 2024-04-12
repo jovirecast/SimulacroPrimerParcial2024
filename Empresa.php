@@ -29,7 +29,8 @@ el tipo y
 número de documento de un Cliente y retorna una colección con las ventas realizadas al 
 cliente.*/
 
-class Empresa {
+class Empresa
+{
 
     private $denominacionEmpresa;
     private $direccionEmpresa;
@@ -91,4 +92,91 @@ class Empresa {
         $this->coleccionVentasEmpresa = $coleccionVentasEmpresa;
     }
 
+    //Método que recorre la coleccion de motos y retorna la referencia al objeto cuyo codigo coincide
+    public function retornarMoto($codigoMoto)
+    {
+        //inicializacion variables
+        $arregloObjetosMoto = $this->getColeccionMotosEmpresa();
+        $codigoBuscaMoto = 0;
+        $indiceObjetosMoto = 0;
+        $cantidadObjetosMoto = count($arregloObjetosMoto);
+        $objetoEncontradoMoto = false;
+        $motoEncontrada = null;
+
+        //instrucciones
+        while ($indiceObjetosMoto < $cantidadObjetosMoto && !$objetoEncontradoMoto) {
+            $codigoBuscaMoto = $arregloObjetosMoto[$indiceObjetosMoto]->getCodigoMoto();
+            if ($codigoBuscaMoto == $codigoMoto) {
+                $objetoEncontradoMoto = true;
+                $motoEncontrada = $arregloObjetosMoto[$indiceObjetosMoto];
+            } else {
+                $indiceObjetosMoto++;
+            }
+        }
+
+        //retorno
+        return $motoEncontrada;
+    }
+
+    //Método que recibe por parámetro una coleccion de códigos de motos, revisa si esos cógidos pertenecen a la coleccion y devuelve el impote final de venta
+    public function registrarVenta($colCodigosMoto, $objCliente)
+    {
+
+        //inicializacion variables
+        $encuentraCodigo = false;
+        $cantidadCodigosMoto = count($colCodigosMoto);
+        $i = 0;
+        $coleccionDeMotos = $this->getColeccionMotosEmpresa();
+        $cantidadMotosColeccion = count($coleccionDeMotos);
+        $r = 0;
+        $motoColeccion = null;
+        $ventaRegistrada = new Venta(null, date("d/m/Y"), $objCliente, $coleccionDeMotos, null);
+
+
+        //instrucciones
+        while ($i > $cantidadCodigosMoto && !$encuentraCodigo) {
+            while ($r > $cantidadMotosColeccion) {
+                $motoColeccion = $coleccionDeMotos[$r];
+                if ($colCodigosMoto[$i] == $motoColeccion->getCodigoMoto()) {
+                    if ($objCliente->estadoCliente() == true && $motoColeccion->motoEnStock() == true) {
+                        $ventaRegistrada->setPrecioMoto($motoColeccion->darPrecioVenta());
+                        $encuentraCodigo = true;  
+                    } else {
+
+                    }
+                } else {
+                    $r++;
+                }
+                $i++;
+            }
+
+        }
+        //retorno importe final de la venta
+        return ;
+    }
+
+
+    //Método retornarVentasXCliente recibe el tipo y numero de documento de un cliente y retorna la coleccion de compras que realizó
+
+    public function retornarVentasXCliente($tipo, $numDoc)
+    {
+        //inicializacion variables
+        $todosLosClientes = $this->getColeccionClientesEmpresa();
+
+        //instrucciones
+
+        //retorno
+    }
+
+    
+    //Método __toString para retornar los valores de la clase
+    public function __toString()
+    {
+        return
+            "Denominación de la empresa: " . $this->getDenominacionEmpresa() . "\n" .
+            "Dirección de la empresa: " . $this->getDireccionEmpresa() . "\n" .
+            "\nLista de clientes: \n" . $this->getColeccionClientesEmpresa() . "\n" .
+            "Inventario de motos: \n" . $this->getColeccionMotosEmpresa() . "\n" .
+            "\nHistorial de ventas: \n" . $this->getColeccionVentasEmpresa() . "\n";
+    }
 }

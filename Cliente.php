@@ -73,26 +73,48 @@ class Cliente
     {
         $this->numeroDocumentoCliente = $numeroDocumentoCliente;
     }
-    public function __toString(){
 
+    public function estadoCliente()
+    {
         //inicialización variable
-        
-        $estadoCliente = "" ;
+
+        $estadoCliente = false;
 
         //instrucciones
-        if ($this->getCondicionCliente() == true){
-            $estadoCliente = "Alta";
-        } else { 
-            $estadoCliente = "Baja";
+        if ($this->getCondicionCliente() == true) {
+            $estadoCliente = true;
         };
-        
+
+        //retorno
+        return $estadoCliente;
+    }
+
+    public function clienteAltaBaja()
+    {
+        //inicialización variable
+
+        $altaBajaCliente = "";
+
+        //instrucciones
+        if ($this->estadoCliente() == true) {
+            $altaBajaCliente = "Alta";
+        } else {
+            $altaBajaCliente = "Baja";
+        };
+
+        //retorno usando variables de las instrucciones
+        return $altaBajaCliente;
+    }
+
+
+    public function __toString()
+    {
         //retorno usando variables de las instrucciones
         return
             "Nombre: " . $this->getNombreCliente() . "\n" .
             "Apellido: " . $this->getApellidoCliente() . "\n" .
-            "Estado del cliente (Alta/Baja): ". $estadoCliente . "\n".
+            "Estado del cliente (Alta/Baja): " . $this->clienteAltaBaja() . "\n" .
             "Tipo de documento: " . $this->getTipoDocumentoCliente() . "\n" .
-            "Número de documento: " . $this->getNumeroDocumentoCliente() . "\n";        
+            "Número de documento: " . $this->getNumeroDocumentoCliente() . "\n";
     }
-
 }
