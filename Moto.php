@@ -96,88 +96,47 @@ class Moto
         $this->stockMoto = $stockMoto;
     }
 
-    //Método darPrecioVenta para calcular el valor al cual vender la moto, si no está disponible es (valor = 0), si está es (venta = costo + [costo + (año * porcentaje)])
     public function darPrecioVenta()
     {
 
-        //Inicialización variables
-        $valorVentaMoto = 0;
-        $precioCompra = $this->getCostoMoto();
-        $motoParaVenta = $this->getStockMoto();
-        $aumentoVenta = $this->calcularPorcentajeAumento();
+        //ini
+        $compraMoto = $this->getCostoMoto();
+        $añoModeloMoto = $this->getAñoMoto();
+        $porIncAnual = ($this->getPorcentajeIncrementoAnualMoto() / 100);
+        $motoDisponible = $this->getStockMoto();
+        $fechaAcutal = date("Y");
+        $fechaVenta = $fechaAcutal - $añoModeloMoto;
 
-
-        //instrucciones
-        if ($motoParaVenta == true) {
-            $valorVentaMoto = ($precioCompra + ($precioCompra * $aumentoVenta));
+        if ($motoDisponible == true) {
+            $valorDeVenta = $compraMoto + $compraMoto * ($fechaVenta * $porIncAnual);
         } else {
-            $valorVentaMoto = -1;
+            $valorDeVenta = -1;
         }
-        return $valorVentaMoto;
+
+        return $valorDeVenta;
     }
 
-    //Método para calcular el incremento según el año
-    public function calcularPorcentajeAumento()
-    {
+    public function textoStock(){
+        $motoEnStock = $this->getStockMoto();
+        $mensajeStock = "";
 
-        //inicializacion variable
-        $añoActual = date("Y");
-        $ajusteAñoMoto = 0;
-        $yearMoto = $this->getAñoMoto();
-        $porcentajeAumento = $this->getPorcentajeIncrementoAnualMoto();
-        $amortizaciónMoto = 0;
-
-        //instrucciones
-        $porcentajeAumento = ($porcentajeAumento / 100);
-        $amortizaciónMoto = $añoActual - $yearMoto;
-        $ajusteAñoMoto = ($amortizaciónMoto * $porcentajeAumento);
-
-        return $ajusteAñoMoto;
-    }
-
-    //Método para saber si la moto está o no en stock
-    public function motoEnStock()
-    {
-        //inicialización variable
-
-        $motoEnStock = false;
-
-        //instrucciones
-        if ($this->getStockMoto() == true) {
-            $motoEnStock = true;
-        };
-
-        //retorno
-        return $motoEnStock;
-    }
-
-    public function motoSiNo()
-    {
-        //inicialización variable
-
-        $motoSiNo = "";
-
-        //instrucciones
-        if ($this->motoEnStock() == true) {
-            $motoSiNo = "Si";
+        if ($motoEnStock == true){
+            $mensajeStock = "Si";
         } else {
-            $motoSiNo = "No";
-        };
+            $mensajeStock = "No";
+        }
 
-        //retorno usando variables de las instrucciones
-        return $motoSiNo;
+        return $mensajeStock;
     }
 
-    //Método __toString para retornar los atributos
     public function __toString()
     {
-        //retorno usando variables de las instrucciones
         return
-            "Codigo: " . $this->getCodigoMoto() . "\n" .
-            "Costo: " . $this->getCostoMoto() . "\n" .
-            "Año de fabricación: " . $this->getAñoMoto() . "\n" .
-            "Descripción: " . $this->getDescripcionMoto() . "\n" .
-            "Porcentaje de incremento anual: " . $this->getPorcentajeIncrementoAnualMoto() . " %" . "\n" .
-            "Moto disponible: " . $this->motoSiNo();
+            "Código: ".$this->getCodigoMoto() . "\n" .
+            "Costo: ". $this->getCostoMoto() . "\n" .
+            "Año: ".$this->getAñoMoto() . "\n" .
+            "Descripción: ".$this->getDescripcionMoto() . "\n" .
+            "Porcentaje de incremento anual: ". $this->getPorcentajeIncrementoAnualMoto() . "\n" .
+            "Moto en stock: ".$this->textoStock(). "\n";
     }
 }

@@ -25,8 +25,8 @@ class Venta
     private $numeroVenta;
     private $fechaVenta;
     private $objClienteVenta;
-    private $objColeccionMoto;
-    private $precioMoto;
+    private $arrayColeccionMoto;
+    private $precioFinal;
 
     //Método constructor de la clase
     public function __construct($numero, $fecha, $cliente, $coleccionMoto, $precio)
@@ -34,8 +34,8 @@ class Venta
         $this->numeroVenta = $numero;
         $this->fechaVenta = $fecha;
         $this->objClienteVenta = $cliente;
-        $this->objColeccionMoto = $coleccionMoto;
-        $this->precioMoto = $precio;
+        $this->arrayColeccionMoto = $coleccionMoto;
+        $this->precioFinal = $precio;
     }
 
     //Getters de la clase
@@ -51,13 +51,13 @@ class Venta
     {
         return $this->objClienteVenta;
     }
-    public function getObjColeccionMoto()
+    public function getArrayColeccionMoto()
     {
-        return $this->objColeccionMoto;
+        return $this->arrayColeccionMoto;
     }
-    public function getPrecioMoto()
+    public function getPrecioFinal()
     {
-        return $this->precioMoto;
+        return $this->precioFinal;
     }
 
     //Setters de la clase
@@ -73,66 +73,55 @@ class Venta
     {
         $this->objClienteVenta = $cliente;
     }
-    public function setObjColeccionMoto($coleccionMoto)
+    public function setArrayColeccionMoto($coleccionMoto)
     {
-        $this->objColeccionMoto = $coleccionMoto;
+        $this->arrayColeccionMoto = $coleccionMoto;
     }
-    public function setPrecioMoto($precioMoto)
+    public function setPrecioFinal($precioFinal)
     {
-        $this->precioMoto = $precioMoto;
+        $this->precioFinal = $precioFinal;
     }
 
-    //Métdo para incorporar una moto a la coleccion de motos de la venta
     public function incorporarMoto($objMoto)
     {
+        $posibleVentaMoto = $objMoto->getStockMoto();
+        $posibleVentaCliente = $this->getObjClienteVenta()->getCondicionCliente();
+        $precioDeVenta = $this->getPrecioFinal();
+        $precioDeMoto = $objMoto->darPrecioVenta();
+        $arregloColMotos = $this->getArrayColeccionMoto();
 
-        //inicialización variable
-        $motoPuedeVenderse = $objMoto->motoEnStock();
-        $actualizaPrecio = 0;
-        $clienteHabilitado = $this->objClienteVenta->estadoCliente();
-        $arrayColeccionMotos = $this->getObjColeccionMoto();
-        $retornoMotos = array($arrayColeccionMotos);
-
-        //instrucciones
-        if ($motoPuedeVenderse == true && $clienteHabilitado == true) {
-            $actualizaPrecio = $objMoto->darPrecioVenta();
-            $this->setPrecioMoto($actualizaPrecio);
-            array_push($retornoMotos, $objMoto);
-            $this->setObjColeccionMoto($retornoMotos);
+        if ($posibleVentaMoto == true && $posibleVentaCliente == true) {
+            array_push($arregloColMotos, $objMoto);
+            $precioDeVenta = $precioDeVenta + $precioDeMoto;
+            $this->setPrecioFinal($precioDeVenta);
         }
-
-
-        //retorno
-        return $retornoMotos;
     }
 
-    public function recorridoMotos(){
-        $arregloMotos = $this->getObjColeccionMoto();
-        $cantArregloMotos = count($arregloMotos);
-        $mensajeColeccionMoto = "";
+    public function textoCliente()
+    {
+        $listadoCliente = $this->getObjClienteVenta();
 
-        for ($i=0; $i<$cantArregloMotos;$i++){
-            $mensajeColeccionMoto = "Codigo: " . $arregloMotos[$i]->getCodigoMoto() . "\n" .
-            "Costo: " . $arregloMotos[$i]->getCostoMoto() . "\n" .
-            "Año de fabricación: " . $arregloMotos[$i]->getAñoMoto() . "\n" .
-            "Descripción: " . $arregloMotos[$i]->getDescripcionMoto() . "\n" .
-            "Porcentaje de incremento anual: " . $arregloMotos[$i]->getPorcentajeIncrementoAnualMoto() . " %" . "\n" .
-            "Moto disponible: " . $arregloMotos[$i]->motoSiNo();
+        return $listadoCliente->__toString();
+    }
+
+    public function textoMotos()
+    {
+        $arregloMotos = $this->getArrayColeccionMoto();
+        $textoDeMoto = "";
+        foreach ($arregloMotos as $objetoMoto) {
+            $textoDeMoto = $textoDeMoto . $objetoMoto->__toString();
         }
 
-        return $mensajeColeccionMoto;
+        return $textoDeMoto;
     }
-    //Método __toString para retornar los atributos
+
     public function __toString()
     {
-
-
-        //retorno usando variables de las instrucciones
         return
-            "Número de Venta: " . $this->getNumeroVenta() . "\n" .
-            "Fecha de venta: " . $this->getFechaVenta() . "\n" .
-            "Cliente: \n" . $this->getObjClienteVenta() . "\n" .
-            "Moto vendida: \n" . $this->recorridoMotos() . "\n" .
-            "Precio de venta: " . $this->getPrecioMoto() . "\n";
+            "Número de venta: " . $this->getNumeroVenta() . "\n" .
+            "Fecha de la venta: " . $this->getFechaVenta() . "\n" .
+            "Cliente: " . "\n" . $this->textoCliente() . "\n" .
+            "Motos vendidas: \n" . $this->textoMotos() . "\n" .
+            "Valor total de la venta: " . $this->getPrecioFinal();
     }
 }

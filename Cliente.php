@@ -73,48 +73,27 @@ class Cliente
     {
         $this->numeroDocumentoCliente = $numeroDocumentoCliente;
     }
+    
+    public function textoAltaBaja(){
+        $motoEnStock = $this->getCondicionCliente();
+        $mensajeStock = "";
 
-    public function estadoCliente()
-    {
-        //inicialización variable
-
-        $estadoCliente = false;
-
-        //instrucciones
-        if ($this->getCondicionCliente() == true) {
-            $estadoCliente = true;
-        };
-
-        //retorno
-        return $estadoCliente;
-    }
-
-    public function clienteAltaBaja()
-    {
-        //inicialización variable
-
-        $altaBajaCliente = "";
-
-        //instrucciones
-        if ($this->estadoCliente() == true) {
-            $altaBajaCliente = "Alta";
+        if ($motoEnStock == true){
+            $mensajeStock = "Alta";
         } else {
-            $altaBajaCliente = "Baja";
-        };
+            $mensajeStock = "Baja";
+        }
 
-        //retorno usando variables de las instrucciones
-        return $altaBajaCliente;
+        return $mensajeStock;
     }
-
 
     public function __toString()
     {
-        //retorno usando variables de las instrucciones
         return
-            "Nombre: " . $this->getNombreCliente() . "\n" .
-            "Apellido: " . $this->getApellidoCliente() . "\n" .
-            "Estado del cliente (Alta/Baja): " . $this->clienteAltaBaja() . "\n" .
-            "Tipo de documento: " . $this->getTipoDocumentoCliente() . "\n" .
-            "Número de documento: " . $this->getNumeroDocumentoCliente() . "\n";
+            "Nombre: ".$this->getNombreCliente() . "\n" .
+            "Apellido: ".$this->getApellidoCliente() . "\n" .
+            "Estado del cliente (Alta/Baja): ".$this->textoAltaBaja() . "\n" .
+            "Tipo de documento: ". $this->getTipoDocumentoCliente() . "\n" .
+            "Número de documento: ". $this->getNumeroDocumentoCliente(). "\n";
     }
 }
