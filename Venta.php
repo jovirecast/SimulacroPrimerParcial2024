@@ -84,12 +84,14 @@ class Venta
 
     public function incorporarMoto($objMoto)
     {
+        //Inicialización de variables
         $posibleVentaMoto = $objMoto->getStockMoto();
         $posibleVentaCliente = $this->getObjClienteVenta()->getCondicionCliente();
         $precioDeVenta = $this->getPrecioFinal();
         $precioDeMoto = $objMoto->darPrecioVenta();
         $arregloColMotos = $this->getArrayColeccionMoto();
 
+        //instrucciones
         if ($posibleVentaMoto == true && $posibleVentaCliente == true) {
             array_push($arregloColMotos, $objMoto);
             $precioDeVenta = $precioDeVenta + $precioDeMoto;
@@ -97,24 +99,32 @@ class Venta
         }
     }
 
+    //Método para utilizar el método _toString del objeto cliente
     public function textoCliente()
     {
         $listadoCliente = $this->getObjClienteVenta();
 
+        //Retorno
         return $listadoCliente->__toString();
     }
 
+    //Método para utilizar el método _toString de los objetos en el arreglo de colecciones de motos
     public function textoMotos()
     {
+        //Inicialización de variables
         $arregloMotos = $this->getArrayColeccionMoto();
         $textoDeMoto = "";
+
+        //instrucciones
         foreach ($arregloMotos as $objetoMoto) {
             $textoDeMoto = $textoDeMoto . $objetoMoto->__toString();
         }
 
+        //Retorno
         return $textoDeMoto;
     }
 
+    //Método __toString
     public function __toString()
     {
         return

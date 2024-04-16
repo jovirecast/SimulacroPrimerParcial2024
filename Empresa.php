@@ -94,6 +94,7 @@ class Empresa
 
     public function retornarMoto($codigoMoto)
     {
+        //Inicialización de variables
         $colecionMotos = $this->getColeccionMotosEmpresa();
         $contadorCodigoMoto = 0;
         $verificadorMoto = false;
@@ -101,6 +102,7 @@ class Empresa
         $codigoMotoArreglo = 0;
         $referenciaRetorno = null;
 
+        //instrucciones
         while ($contadorCodigoMoto < $cantidadCodigosMotos && $verificadorMoto == false) {
             $codigoMotoArreglo = $colecionMotos[$contadorCodigoMoto]->getCodigoMoto();
             if ($codigoMotoArreglo == $codigoMoto) {
@@ -111,11 +113,13 @@ class Empresa
             }
         }
 
+        //Retorno
         return $colecionMotos[$referenciaRetorno];
     }
 
     public function registrarVenta($colCodigosMoto, $objCliente)
     {
+        //Inicialización de variables
         $clienteValido = $objCliente->getCondicionCliente();
         $arregloMotosVenta = array();
         $enArregloMotos = null;
@@ -125,6 +129,7 @@ class Empresa
         $precioFinal = 0;
         $coleccionDeVentas = array();
 
+        //instrucciones
         if ($clienteValido == true) {
             foreach ($colCodigosMoto as $codigoVenta) {
                 $enArregloMotos = $this->retornarMoto($codigoVenta);
@@ -147,11 +152,13 @@ class Empresa
             $this->setColeccionVentasEmpresa($coleccionDeVentas);
         }
 
+        //Retorno
         return $precioFinal;
     }
 
     public function retornarVentasXCliente($tipo, $numDoc)
     {
+        //Inicialización de variables
         $listadoClientes = $this->getColeccionClientesEmpresa();
         $contadorCliente = 0;
         $cantidadClientes = count($listadoClientes);
@@ -161,6 +168,7 @@ class Empresa
         $tipoDocumentoCliente = null;
         $clienteBuscado = null;
 
+        //instrucciones
         while ($contadorCliente < $cantidadClientes && $verificadorCliente == false) {
             $clienteObjetivo = $listadoClientes[$contadorCliente];
             $documentoCliente = $clienteObjetivo->getNumeroDocumentoCliente();
@@ -184,30 +192,45 @@ class Empresa
             }
         }
 
+        //Retorno
         return $coleccionVentaClientes;
     }
 
+    //Método para utilizar el método _toString de los objetos en los arreglos de clientes y motos
     public function recorridoArreglos($arreglo)
     {
+        //Inicialización de variables
         $mensaje = "";
+
+        //instrucciones
         foreach ($arreglo as $objeto) {
             $mensaje = $mensaje . "\n" . $objeto->__toString();
         }
+
+        //Retorno
         return $mensaje;
     }
 
+    //Método para utilizar el método _toString de los objetos Venta en la coleccón
     public function recorridoVentas()
     {
+        //Inicialización de variables
         $ventasColeccion = $this->getColeccionVentasEmpresa();
         $mensajeVentas = "";
+
+        //instrucciones
         foreach ($ventasColeccion as $ventaMostrar) {
             $mensajeVentas = $ventaMostrar->__toString();
         }
+
+        //Retorno
         return $mensajeVentas;
     }
 
+    //Método __toString
     public function __toString()
     {
+        //Retorno
         return
             "Denominación: " . $this->getDenominacionEmpresa() . "\n" .
             "Dirección: " . $this->getDireccionEmpresa() . "\n" .

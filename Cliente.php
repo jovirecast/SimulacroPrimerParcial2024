@@ -73,27 +73,34 @@ class Cliente
     {
         $this->numeroDocumentoCliente = $numeroDocumentoCliente;
     }
-    
-    public function textoAltaBaja(){
+
+    //Método para mostrar un valor string al booleano de la condición del cliente
+    public function textoAltaBaja()
+    {
+        //Inicialización de variables
         $motoEnStock = $this->getCondicionCliente();
         $mensajeStock = "";
 
-        if ($motoEnStock == true){
+        //instrucciones
+        if ($motoEnStock == true) {
             $mensajeStock = "Alta";
         } else {
             $mensajeStock = "Baja";
         }
 
+        //Retorno
         return $mensajeStock;
     }
 
+    //Método __toString
     public function __toString()
     {
+        //Retorno
         return
-            "Nombre: ".$this->getNombreCliente() . "\n" .
-            "Apellido: ".$this->getApellidoCliente() . "\n" .
-            "Estado del cliente (Alta/Baja): ".$this->textoAltaBaja() . "\n" .
-            "Tipo de documento: ". $this->getTipoDocumentoCliente() . "\n" .
-            "Número de documento: ". $this->getNumeroDocumentoCliente(). "\n";
+            "Nombre: " . $this->getNombreCliente() . "\n" .
+            "Apellido: " . $this->getApellidoCliente() . "\n" .
+            "Estado del cliente (Alta/Baja): " . $this->textoAltaBaja() . "\n" .
+            "Tipo de documento: " . $this->getTipoDocumentoCliente() . "\n" .
+            "Número de documento: " . $this->getNumeroDocumentoCliente() . "\n";
     }
 }

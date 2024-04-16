@@ -98,8 +98,7 @@ class Moto
 
     public function darPrecioVenta()
     {
-
-        //ini
+        //Inicialización de variables
         $compraMoto = $this->getCostoMoto();
         $añoModeloMoto = $this->getAñoMoto();
         $porIncAnual = ($this->getPorcentajeIncrementoAnualMoto() / 100);
@@ -107,36 +106,45 @@ class Moto
         $fechaAcutal = date("Y");
         $fechaVenta = $fechaAcutal - $añoModeloMoto;
 
+        //instrucciones
         if ($motoDisponible == true) {
             $valorDeVenta = $compraMoto + $compraMoto * ($fechaVenta * $porIncAnual);
         } else {
             $valorDeVenta = -1;
         }
 
+        //Retorno
         return $valorDeVenta;
     }
 
-    public function textoStock(){
+    //Método para mostrar un valor string al booleano del stock de motos
+    public function textoStock()
+    {
+        //Inicialización de variables
         $motoEnStock = $this->getStockMoto();
         $mensajeStock = "";
 
-        if ($motoEnStock == true){
+        //instrucciones
+        if ($motoEnStock == true) {
             $mensajeStock = "Si";
         } else {
             $mensajeStock = "No";
         }
 
+        //Retorno
         return $mensajeStock;
     }
 
+    //Método __toString
     public function __toString()
     {
+        //Retorno
         return
-            "Código: ".$this->getCodigoMoto() . "\n" .
-            "Costo: ". $this->getCostoMoto() . "\n" .
-            "Año: ".$this->getAñoMoto() . "\n" .
-            "Descripción: ".$this->getDescripcionMoto() . "\n" .
-            "Porcentaje de incremento anual: ". $this->getPorcentajeIncrementoAnualMoto() . "\n" .
-            "Moto en stock: ".$this->textoStock(). "\n";
+            "Código: " . $this->getCodigoMoto() . "\n" .
+            "Costo: " . $this->getCostoMoto() . "\n" .
+            "Año: " . $this->getAñoMoto() . "\n" .
+            "Descripción: " . $this->getDescripcionMoto() . "\n" .
+            "Porcentaje de incremento anual: " . $this->getPorcentajeIncrementoAnualMoto() . "\n" .
+            "Moto en stock: " . $this->textoStock() . "\n";
     }
 }
